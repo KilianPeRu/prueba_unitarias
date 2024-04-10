@@ -44,10 +44,19 @@ public class Connect4TDDSpec {
 
     @Test
     public void whenDiscOutsideBoardThenRuntimeException() {
+    assertThatThrownBy(() -> tested.putDiscInColumn(9)).isInstanceOf(RuntimeException.class);
+    assertThatThrownBy(() -> tested.putDiscInColumn(-1)).isInstanceOf(RuntimeException.class);
 
-
+    assertThatThrownBy(() -> {
+        for (int i = 0; i < 9; i++) {
+            tested.putDiscInColumn(i);
+        };
+    }).isInstanceOf(RuntimeException.class).hasMessageContaining("No more room");
     }
 
+    assertThrows(RuntimeException.class, () -> {
+
+    })
     @Test
     public void whenFirstDiscInsertedInColumnThenPositionIsZero() {
 
@@ -58,13 +67,21 @@ public class Connect4TDDSpec {
     @Test
     public void whenSecondDiscInsertedInColumnThenPositionIsOne() {
 
+        for (int i = 0; i < 7; i++) {
+            tested.putDiscInColumn(i);
+            assertThat(tested.putDiscInColumn(i)).isEqualTo(1);
+        }
 
     }
 
     @Test
     public void whenDiscInsertedThenNumberOfDiscsIncreases() {
 
-
+        int discosIniciales = 0;
+        for (int i = 0; i < 7; i++) {
+            tested.putDiscInColumn(i);
+            assertThat(tested.putDiscInColumn(i)).isEqualTo(discosIniciales+1+i);
+        }
 
     }
 
